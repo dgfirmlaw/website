@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | DG Law Firm | Dallas Personal Injury Attorneys</title>
+    <meta name="description" content="Contact DG Law Firm for a free consultation. Dallas personal injury attorneys ready to help with your case. Call (469) 262-5395.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --obsidian: #0B0B0D;
+            --obsidian-light: #141418;
+            --obsidian-lighter: #1a1a1f;
+            --ivory: #F5F4F2;
+            --ivory-muted: #E8E6E3;
+            --burnt-bronze: #C46A2B;
+            --burnt-bronze-light: #D4823F;
+            --aged-gold: #B08D57;
+            --aged-gold-light: #C9A66B;
+            --courtroom-green: #0F2A24;
+            --courtroom-green-light: #163D34;
+            --imperial-purple: #2B1434;
+            --gradient-bronze: linear-gradient(135deg, #C46A2B 0%, #B08D57 100%);
+            --gradient-dark: linear-gradient(180deg, #0B0B0D 0%, #141418 100%);
+            --font-heading: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', sans-serif;
+            --section-padding: 120px;
+            --container-width: 1400px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--obsidian);
+            color: var(--ivory);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+        
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--aged-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--aged-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease;
+            opacity: 0.5;
+        }
+        
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-width: 2px;
+            opacity: 1;
+        }
+        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--ivory);
+        }
+        
+        h1 { font-size: clamp(3rem, 8vw, 6rem); }
+        h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+        h3 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+        
+        p { color: var(--ivory-muted); margin-bottom: 1rem; }
+        a { color: var(--burnt-bronze); text-decoration: none; transition: all 0.3s ease; }
+        a:hover { color: var(--burnt-bronze-light); }
+        
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 40px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .btn-primary {
+            background: transparent;
+            color: var(--ivory);
+            border: 2px solid var(--burnt-bronze);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-bronze);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover::before { left: 0; }
+        .btn-primary:hover {
+            color: var(--obsidian);
+            border-color: var(--aged-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(196, 106, 43, 0.4);
+        }
+        
+        .btn-glow {
+            background: var(--gradient-bronze);
+            color: var(--obsidian);
+            border: none;
+        }
+        
+        .btn-glow:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(196, 106, 43, 0.4);
+            color: var(--obsidian);
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            transition: all 0.5s ease;
+        }
+        
+        .header.scrolled .header-inner {
+            padding: 15px 50px;
+            background: rgba(11, 11, 13, 0.95);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-bronze);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--obsidian);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: logo-shine 3s infinite;
+        }
+        
+        @keyframes logo-shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--ivory);
+        }
+        
+        .logo-text span {
+            display: block;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .nav-link {
+            position: relative;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ivory);
+            padding: 10px 0;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gradient-bronze);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-link:hover { color: var(--aged-gold); }
+        .nav-link:hover::before { width: 100%; }
+        .nav-link.active::before { width: 100%; }
+        .nav-link.active { color: var(--aged-gold); }
+        
+        .header-cta {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .header-phone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--ivory);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .header-phone i { color: var(--aged-gold); }
+        
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        .mobile-toggle span {
+            width: 30px;
+            height: 2px;
+            background: var(--ivory);
+            transition: all 0.3s ease;
+        }
+        
+        /* Page Hero */
+        .page-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+        
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(15, 42, 36, 0.5) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(43, 20, 52, 0.4) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(196, 106, 43, 0.15) 0%, transparent 60%),
+                        var(--obsidian);
+            z-index: 1;
+        }
+        
+        .page-hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(176, 141, 87, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(176, 141, 87, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 2;
+        }
+        
+        .page-hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 40px;
+        }
+        
+        .page-hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .page-hero-label::before,
+        .page-hero-label::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--gradient-bronze);
+        }
+        
+        .page-hero-title {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .page-hero-title .highlight {
+            background: var(--gradient-bronze);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--ivory-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            position: relative;
+            padding: 100px 0 150px;
+            overflow: hidden;
+        }
+        
+        .contact-section-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 0% 50%, rgba(15, 42, 36, 0.3) 0%, transparent 50%);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Contact Info */
+        .contact-info {
+            position: relative;
+        }
+        
+        .contact-info .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 20px;
+        }
+        
+        .contact-info h2 {
+            margin-bottom: 30px;
+        }
+        
+        .contact-info > p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 40px;
+        }
+        
+        .contact-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-card {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-card:hover {
+            transform: translateX(10px);
+            border-color: rgba(176, 141, 87, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(196, 106, 43, 0.1);
+            border: 1px solid rgba(196, 106, 43, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--burnt-bronze);
+            flex-shrink: 0;
+            transition: all 0.4s ease;
+        }
+        
+        .contact-card:hover .contact-card-icon {
+            background: var(--gradient-bronze);
+            color: var(--obsidian);
+            transform: scale(1.1);
+        }
+        
+        .contact-card-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .contact-card-content p {
+            font-size: 15px;
+            color: var(--ivory-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        .contact-card-content a {
+            color: var(--ivory-muted);
+            transition: color 0.3s ease;
+        }
+        
+        .contact-card-content a:hover {
+            color: var(--aged-gold);
+        }
+        
+        /* Contact Form */
+        .contact-form-wrapper {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.2);
+            border-radius: 20px;
+            padding: 60px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-form-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-bronze);
+        }
+        
+        .contact-form-wrapper h3 {
+            margin-bottom: 10px;
+        }
+        
+        .contact-form-wrapper > p {
+            color: var(--ivory-muted);
+            margin-bottom: 40px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 12px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 20px 24px;
+            background: rgba(11, 11, 13, 0.8);
+            border: 1px solid rgba(176, 141, 87, 0.2);
+            border-radius: 12px;
+            color: var(--ivory);
+            font-family: var(--font-body);
+            font-size: 15px;
+            transition: all 0.4s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--burnt-bronze);
+            box-shadow: 0 0 30px rgba(196, 106, 43, 0.15);
+            background: rgba(11, 11, 13, 1);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(232, 230, 227, 0.3);
+        }
+        
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23B08D57' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            padding-right: 50px;
+        }
+        
+        .form-group select option {
+            background: var(--obsidian);
+            color: var(--ivory);
+        }
+        
+        .form-submit {
+            margin-top: 35px;
+        }
+        
+        .form-submit .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 22px 40px;
+        }
+        
+        .form-disclaimer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--ivory-muted);
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        /* Map Section */
+        .map-section {
+            position: relative;
+            height: 500px;
+            background: var(--obsidian-light);
+        }
+        
+        .map-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(80%) contrast(1.1) brightness(0.8);
+            transition: filter 0.5s ease;
+        }
+        
+        .map-section:hover iframe {
+            filter: grayscale(40%) contrast(1) brightness(0.9);
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            background: rgba(11, 11, 13, 0.95);
+            border: 1px solid rgba(176, 141, 87, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            max-width: 350px;
+        }
+        
+        .map-overlay h3 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+        
+        .map-overlay-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .map-overlay-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .map-overlay-item i {
+            color: var(--aged-gold);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        
+        .map-overlay-item span,
+        .map-overlay-item a {
+            color: var(--ivory-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .map-overlay-item a:hover {
+            color: var(--aged-gold);
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            position: relative;
+            padding: 150px 0;
+            overflow: hidden;
+        }
+        
+        .faq-section-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 100%, rgba(15, 42, 36, 0.3) 0%, transparent 60%);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-header .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 20px;
+        }
+        
+        .section-header p {
+            max-width: 600px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .faq-item {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.1);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(176, 141, 87, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        .faq-item h4 {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .faq-item h4 i {
+            color: var(--burnt-bronze);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        
+        .faq-item p {
+            font-size: 15px;
+            line-height: 1.8;
+            margin: 0;
+            padding-left: 35px;
+        }
+        
+        /* Footer */
+        .footer {
+            position: relative;
+            background: var(--obsidian);
+            padding-top: 100px;
+            border-top: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .footer-brand p {
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer-social a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid rgba(176, 141, 87, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ivory-muted);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            background: var(--gradient-bronze);
+            border-color: transparent;
+            color: var(--obsidian);
+            transform: translateY(-3px);
+        }
+        
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 25px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li { margin-bottom: 15px; }
+        
+        .footer-links a {
+            color: var(--ivory-muted);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--aged-gold);
+            padding-left: 10px;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-contact-item i {
+            color: var(--aged-gold);
+            margin-top: 4px;
+        }
+        
+        .footer-contact-item span,
+        .footer-contact-item a {
+            color: var(--ivory-muted);
+            font-size: 15px;
+        }
+        
+        .footer-bottom {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-copyright {
+            color: var(--ivory-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .footer-legal {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-legal a {
+            color: var(--ivory-muted);
+            font-size: 14px;
+        }
+        
+        .footer-legal a:hover { color: var(--aged-gold); }
+        
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .contact-grid {
+                gap: 50px;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-menu { display: none; }
+            .mobile-toggle { display: flex; }
+            
+            .map-overlay {
+                position: relative;
+                top: 0;
+                left: 0;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .map-section {
+                height: auto;
+            }
+            
+            .map-section iframe {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .container { padding: 0 20px; }
+            .header-inner { padding: 20px; }
+            .header-phone { display: none; }
+            
+            .contact-form-wrapper {
+                padding: 40px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    
+    <!-- Three.js Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">DG</div>
+                <div class="logo-text">
+                    DG Law
+                    <span>Law Firm</span>
+                </div>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Practice Areas</a>
+                <a href="blog.html" class="nav-link">Insights</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+            </nav>
+            
+            <div class="header-cta">
+                <a href="tel:4692625395" class="header-phone">
+                    <i data-lucide="phone"></i>
+                    (469) 262-5395
+                </a>
+                <a href="contact.html" class="btn btn-primary">Free Consultation</a>
+            </div>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-grid"></div>
+        
+        <div class="page-hero-content">
+            <div class="page-hero-label">Get in Touch</div>
+            <h1 class="page-hero-title">
+                <span class="highlight">Contact</span> Us
+            </h1>
+            <p class="page-hero-subtitle">
+                Ready to discuss your case? Reach out today for a free, confidential consultation. We're here to help.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-section-bg"></div>
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info reveal-left">
+                    <div class="section-label">Reach Out</div>
+                    <h2>Let's Talk About Your Case</h2>
+                    <p>Whether you've been injured in an accident, lost a loved one due to negligence, or suffered from medical malpractice, we're here to help you navigate the legal process and fight for the compensation you deserve.</p>
+                    
+                    <div class="contact-cards">
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4>Office Location</h4>
+                                <p>350 N. Ervay St., Suite 1006<br>Dallas, Texas 75201</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <i data-lucide="phone"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4>Phone Number</h4>
+                                <p><a href="tel:4692625395">(469) 262-5395</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <i data-lucide="mail"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4>Email Address</h4>
+                                <p><a href="mailto:contact@dgfirmlaw.com">contact@dgfirmlaw.com</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <div class="contact-card-content">
+                                <h4>Office Hours</h4>
+                                <p>Monday - Friday: 9:00 AM - 6:00 PM<br>24/7 Emergency Available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-wrapper reveal-right">
+                    <h3>Request Your Free Consultation</h3>
+                    <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                    
+                    <form id="contactForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Your first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Your last name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" placeholder="(xxx) xxx-xxxx" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="caseType">Case Type</label>
+                                <select id="caseType" name="caseType" required>
+                                    <option value="">Select your case type</option>
+                                    <option value="personal-injury">Personal Injury</option>
+                                    <option value="auto-accident">Auto Accident</option>
+                                    <option value="trucking-accident">Trucking Accident</option>
+                                    <option value="premises-liability">Premises Liability</option>
+                                    <option value="medical-malpractice">Medical Malpractice</option>
+                                    <option value="wrongful-death">Wrongful Death</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="message">Tell Us About Your Case</label>
+                                <textarea id="message" name="message" placeholder="Please describe your situation and how we can help..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-glow">
+                                <i data-lucide="send"></i>
+                                Submit Request
+                            </button>
+                        </div>
+                        <p class="form-disclaimer">Your information is protected by attorney-client privilege. By submitting this form, you agree to our privacy policy.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="map-section">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3354.5076867726457!2d-96.79678!3d32.78318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e991b5d8f8f7b%3A0x5d8f8f7b5d8f8f7b!2s350%20N%20Ervay%20St%2C%20Dallas%2C%20TX%2075201!5e0!3m2!1sen!2sus!4v1609459200000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+        <div class="map-overlay">
+            <h3>Visit Our Office</h3>
+            <div class="map-overlay-item">
+                <i data-lucide="map-pin"></i>
+                <span>350 N. Ervay St., Suite 1006<br>Dallas, Texas 75201</span>
+            </div>
+            <div class="map-overlay-item">
+                <i data-lucide="phone"></i>
+                <span><a href="tel:4692625395">(469) 262-5395</a></span>
+            </div>
+            <div class="map-overlay-item">
+                <i data-lucide="clock"></i>
+                <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-section-bg"></div>
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">Common Questions</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item reveal stagger-1">
+                    <h4>
+                        <i data-lucide="help-circle"></i>
+                        How much does a consultation cost?
+                    </h4>
+                    <p>Initial consultations are always free and confidential. We'll evaluate your case and explain your options with no obligation.</p>
+                </div>
+                
+                <div class="faq-item reveal stagger-2">
+                    <h4>
+                        <i data-lucide="help-circle"></i>
+                        How do you charge for your services?
+                    </h4>
+                    <p>We work on a contingency fee basis for personal injury cases. This means you pay nothing unless we recover compensation for you.</p>
+                </div>
+                
+                <div class="faq-item reveal stagger-3">
+                    <h4>
+                        <i data-lucide="help-circle"></i>
+                        How long do I have to file a claim?
+                    </h4>
+                    <p>In Texas, the statute of limitations for most personal injury claims is two years from the date of injury. However, some cases have shorter deadlines, so it's important to consult with an attorney promptly.</p>
+                </div>
+                
+                <div class="faq-item reveal stagger-4">
+                    <h4>
+                        <i data-lucide="help-circle"></i>
+                        What should I bring to my consultation?
+                    </h4>
+                    <p>Any documents related to your case can be helpful: accident reports, medical records, photos, insurance information, and correspondence with other parties.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">DG</div>
+                        <div class="logo-text">
+                            DG Law
+                            <span>Law Firm</span>
+                        </div>
+                    </a>
+                    <p>DG Law Firm provides strategic legal representation for personal injury, wrongful death, and medical malpractice cases throughout Texas.</p>
+                    <div class="footer-social">
+                        <a href="#"><i data-lucide="linkedin"></i></a>
+                        <a href="#"><i data-lucide="facebook"></i></a>
+                        <a href="#"><i data-lucide="twitter"></i></a>
+                        <a href="#"><i data-lucide="instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Practice Areas</h4>
+                    <ul class="footer-links">
+                        <li><a href="services.html#personal-injury">Personal Injury</a></li>
+                        <li><a href="services.html#auto-accidents">Auto Accidents</a></li>
+                        <li><a href="services.html#premises-liability">Premises Liability</a></li>
+                        <li><a href="services.html#medical-malpractice">Medical Malpractice</a></li>
+                        <li><a href="services.html#wrongful-death">Wrongful Death</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="blog.html">Legal Blog</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Contact Info</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span>350 N. Ervay St., Ste. 1006<br>Dallas, Texas 75201</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span><a href="tel:4692625395">(469) 262-5395</a></span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="mail"></i>
+                        <span><a href="mailto:contact@dgfirmlaw.com">contact@dgfirmlaw.com</a></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 Dagmawi Getachew, PLLC. All Rights Reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Disclaimer</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        lucide.createIcons();
+        
+        // Three.js Background with floating orbs
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('bg-canvas'),
+            antialias: true,
+            alpha: true
+        });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        // Create glowing orbs
+        const orbGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+        const orbs = [];
+        
+        for (let i = 0; i < 30; i++) {
+            const material = new THREE.MeshBasicMaterial({
+                color: i % 2 === 0 ? 0xC46A2B : 0xB08D57,
+                transparent: true,
+                opacity: 0.3
+            });
+            
+            const orb = new THREE.Mesh(orbGeometry, material);
+            orb.position.x = (Math.random() - 0.5) * 20;
+            orb.position.y = (Math.random() - 0.5) * 20;
+            orb.position.z = (Math.random() - 0.5) * 10;
+            orb.userData = {
+                speed: Math.random() * 0.5 + 0.5,
+                offset: Math.random() * Math.PI * 2
+            };
+            scene.add(orb);
+            orbs.push(orb);
+        }
+        
+        camera.position.z = 5;
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+        });
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            orbs.forEach(orb => {
+                orb.position.y += Math.sin(time * orb.userData.speed + orb.userData.offset) * 0.003;
+                orb.position.x += Math.cos(time * orb.userData.speed * 0.5 + orb.userData.offset) * 0.002;
+            });
+            
+            camera.position.x += (mouseX * 0.3 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+        
+        let cursorX = 0;
+        let cursorY = 0;
+        let ringX = 0;
+        let ringY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+        });
+        
+        function animateCursor() {
+            ringX += (cursorX - ringX) * 0.1;
+            ringY += (cursorY - ringY) * 0.1;
+            
+            cursorDot.style.left = cursorX + 'px';
+            cursorDot.style.top = cursorY + 'px';
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        
+        animateCursor();
+        
+        document.querySelectorAll('a, button, .btn, input, textarea, select').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+        });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.to('.page-hero-label', { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
+        gsap.to('.page-hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
+        gsap.to('.page-hero-subtitle', { opacity: 1, y: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
+        
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-50px' });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+        
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Create success animation
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check"></i> Message Sent!';
+            btn.style.background = '#163D34';
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                lucide.createIcons();
+                this.reset();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

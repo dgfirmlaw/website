@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Blog | DG Law Firm | Dallas Personal Injury Attorneys</title>
+    <meta name="description" content="Legal insights, case updates, and educational resources from DG Law Firm. Stay informed about personal injury law in Texas.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --obsidian: #0B0B0D;
+            --obsidian-light: #141418;
+            --obsidian-lighter: #1a1a1f;
+            --ivory: #F5F4F2;
+            --ivory-muted: #E8E6E3;
+            --burnt-bronze: #C46A2B;
+            --burnt-bronze-light: #D4823F;
+            --aged-gold: #B08D57;
+            --aged-gold-light: #C9A66B;
+            --courtroom-green: #0F2A24;
+            --courtroom-green-light: #163D34;
+            --imperial-purple: #2B1434;
+            --gradient-bronze: linear-gradient(135deg, #C46A2B 0%, #B08D57 100%);
+            --gradient-dark: linear-gradient(180deg, #0B0B0D 0%, #141418 100%);
+            --font-heading: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Montserrat', sans-serif;
+            --section-padding: 120px;
+            --container-width: 1400px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--obsidian);
+            color: var(--ivory);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+        
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--aged-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--aged-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease;
+            opacity: 0.5;
+        }
+        
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-width: 2px;
+            opacity: 1;
+        }
+        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--ivory);
+        }
+        
+        h1 { font-size: clamp(3rem, 8vw, 6rem); }
+        h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        
+        p { color: var(--ivory-muted); margin-bottom: 1rem; }
+        a { color: var(--burnt-bronze); text-decoration: none; transition: all 0.3s ease; }
+        a:hover { color: var(--burnt-bronze-light); }
+        
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 40px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .btn-primary {
+            background: transparent;
+            color: var(--ivory);
+            border: 2px solid var(--burnt-bronze);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-bronze);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover::before { left: 0; }
+        .btn-primary:hover {
+            color: var(--obsidian);
+            border-color: var(--aged-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(196, 106, 43, 0.4);
+        }
+        
+        .btn-glow {
+            background: var(--gradient-bronze);
+            color: var(--obsidian);
+            border: none;
+        }
+        
+        .btn-glow:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(196, 106, 43, 0.4);
+            color: var(--obsidian);
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            transition: all 0.5s ease;
+        }
+        
+        .header.scrolled .header-inner {
+            padding: 15px 50px;
+            background: rgba(11, 11, 13, 0.95);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-bronze);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--obsidian);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: logo-shine 3s infinite;
+        }
+        
+        @keyframes logo-shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--ivory);
+        }
+        
+        .logo-text span {
+            display: block;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .nav-link {
+            position: relative;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--ivory);
+            padding: 10px 0;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gradient-bronze);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-link:hover { color: var(--aged-gold); }
+        .nav-link:hover::before { width: 100%; }
+        .nav-link.active::before { width: 100%; }
+        .nav-link.active { color: var(--aged-gold); }
+        
+        .header-cta {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .header-phone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--ivory);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .header-phone i { color: var(--aged-gold); }
+        
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        .mobile-toggle span {
+            width: 30px;
+            height: 2px;
+            background: var(--ivory);
+            transition: all 0.3s ease;
+        }
+        
+        /* Page Hero */
+        .page-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+        
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(15, 42, 36, 0.5) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(43, 20, 52, 0.4) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(196, 106, 43, 0.15) 0%, transparent 60%),
+                        var(--obsidian);
+            z-index: 1;
+        }
+        
+        .page-hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(176, 141, 87, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(176, 141, 87, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 2;
+        }
+        
+        .page-hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 40px;
+        }
+        
+        .page-hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .page-hero-label::before,
+        .page-hero-label::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--gradient-bronze);
+        }
+        
+        .page-hero-title {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .page-hero-title .highlight {
+            background: var(--gradient-bronze);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--ivory-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Blog Section */
+        .blog-section {
+            position: relative;
+            padding: 100px 0 150px;
+            overflow: hidden;
+        }
+        
+        .blog-section-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 0% 50%, rgba(15, 42, 36, 0.2) 0%, transparent 50%);
+        }
+        
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Featured Article */
+        .featured-article {
+            margin-bottom: 60px;
+        }
+        
+        .featured-card {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .featured-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(176, 141, 87, 0.3);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+        }
+        
+        .featured-image {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .featured-card:hover .featured-image img {
+            transform: scale(1.05);
+        }
+        
+        .featured-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 11, 13, 0.9) 0%, transparent 60%);
+        }
+        
+        .featured-category {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: var(--gradient-bronze);
+            color: var(--obsidian);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+        
+        .featured-content {
+            padding: 40px;
+        }
+        
+        .featured-meta {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .featured-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--ivory-muted);
+        }
+        
+        .featured-meta i {
+            width: 16px;
+            height: 16px;
+            color: var(--aged-gold);
+        }
+        
+        .featured-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .featured-content h2 a {
+            color: var(--ivory);
+        }
+        
+        .featured-content h2 a:hover {
+            color: var(--aged-gold);
+        }
+        
+        .featured-content p {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .featured-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+        }
+        
+        .featured-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .featured-card:hover .featured-link i {
+            transform: translateX(5px);
+        }
+        
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+        }
+        
+        .blog-card {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(176, 141, 87, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        }
+        
+        .blog-card-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.08);
+        }
+        
+        .blog-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 11, 13, 0.8) 0%, transparent 50%);
+        }
+        
+        .blog-card-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(11, 11, 13, 0.9);
+            border: 1px solid rgba(176, 141, 87, 0.3);
+            color: var(--aged-gold);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .blog-card-content {
+            padding: 30px;
+        }
+        
+        .blog-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .blog-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--ivory-muted);
+        }
+        
+        .blog-card-meta i {
+            width: 14px;
+            height: 14px;
+            color: var(--aged-gold);
+        }
+        
+        .blog-card-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        .blog-card-content h3 a {
+            color: var(--ivory);
+            transition: color 0.3s ease;
+        }
+        
+        .blog-card-content h3 a:hover {
+            color: var(--aged-gold);
+        }
+        
+        .blog-card-content p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .blog-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+        }
+        
+        .blog-card-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .blog-card:hover .blog-card-link i {
+            transform: translateX(5px);
+        }
+        
+        /* Sidebar */
+        .blog-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+        
+        .sidebar-widget {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .sidebar-widget h4 {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(176, 141, 87, 0.2);
+            color: var(--aged-gold);
+        }
+        
+        /* Search Widget */
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-form input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(11, 11, 13, 0.8);
+            border: 1px solid rgba(176, 141, 87, 0.2);
+            border-radius: 10px;
+            color: var(--ivory);
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+        
+        .search-form input:focus {
+            outline: none;
+            border-color: var(--burnt-bronze);
+        }
+        
+        .search-form input::placeholder {
+            color: rgba(232, 230, 227, 0.3);
+        }
+        
+        .search-form button {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-bronze);
+            border: none;
+            border-radius: 10px;
+            color: var(--obsidian);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .search-form button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Category List */
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-list li {
+            border-bottom: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .category-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .category-list a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            color: var(--ivory-muted);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .category-list a:hover {
+            color: var(--aged-gold);
+            padding-left: 10px;
+        }
+        
+        .category-list a span {
+            background: rgba(196, 106, 43, 0.2);
+            color: var(--aged-gold);
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        /* Recent Posts Widget */
+        .recent-posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .recent-post-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .recent-post-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .recent-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .recent-post-item:hover .recent-post-image img {
+            transform: scale(1.1);
+        }
+        
+        .recent-post-content h5 {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .recent-post-content h5 a {
+            color: var(--ivory);
+            transition: color 0.3s ease;
+        }
+        
+        .recent-post-content h5 a:hover {
+            color: var(--aged-gold);
+        }
+        
+        .recent-post-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--ivory-muted);
+        }
+        
+        .recent-post-date i {
+            width: 14px;
+            height: 14px;
+            color: var(--aged-gold);
+        }
+        
+        /* CTA Widget */
+        .cta-widget {
+            background: linear-gradient(135deg, rgba(15, 42, 36, 0.6) 0%, rgba(43, 20, 52, 0.4) 100%) !important;
+            border-color: rgba(176, 141, 87, 0.3) !important;
+            text-align: center;
+        }
+        
+        .cta-widget h4 {
+            border: none !important;
+            text-align: center;
+        }
+        
+        .cta-widget p {
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .cta-widget .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 18px 30px;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 60px;
+        }
+        
+        .pagination a,
+        .pagination span {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a {
+            background: rgba(20, 20, 24, 0.6);
+            border: 1px solid rgba(176, 141, 87, 0.2);
+            color: var(--ivory-muted);
+        }
+        
+        .pagination a:hover {
+            background: var(--gradient-bronze);
+            border-color: transparent;
+            color: var(--obsidian);
+        }
+        
+        .pagination span.active {
+            background: var(--gradient-bronze);
+            color: var(--obsidian);
+        }
+        
+        /* Footer */
+        .footer {
+            position: relative;
+            background: var(--obsidian);
+            padding-top: 100px;
+            border-top: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(176, 141, 87, 0.1);
+        }
+        
+        .footer-brand p {
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer-social a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid rgba(176, 141, 87, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ivory-muted);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            background: var(--gradient-bronze);
+            border-color: transparent;
+            color: var(--obsidian);
+            transform: translateY(-3px);
+        }
+        
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--aged-gold);
+            margin-bottom: 25px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li { margin-bottom: 15px; }
+        
+        .footer-links a {
+            color: var(--ivory-muted);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--aged-gold);
+            padding-left: 10px;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-contact-item i {
+            color: var(--aged-gold);
+            margin-top: 4px;
+        }
+        
+        .footer-contact-item span,
+        .footer-contact-item a {
+            color: var(--ivory-muted);
+            font-size: 15px;
+        }
+        
+        .footer-bottom {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-copyright {
+            color: var(--ivory-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .footer-legal {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-legal a {
+            color: var(--ivory-muted);
+            font-size: 14px;
+        }
+        
+        .footer-legal a:hover { color: var(--aged-gold); }
+        
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-menu { display: none; }
+            .mobile-toggle { display: flex; }
+        }
+        
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-sidebar {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .container { padding: 0 20px; }
+            .header-inner { padding: 20px; }
+            .header-phone { display: none; }
+            
+            .featured-image {
+                height: 280px;
+            }
+            
+            .featured-content {
+                padding: 25px;
+            }
+            
+            .featured-content h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    
+    <!-- Three.js Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">DG</div>
+                <div class="logo-text">
+                    DG Law
+                    <span>Law Firm</span>
+                </div>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Practice Areas</a>
+                <a href="blog.html" class="nav-link active">Insights</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+            
+            <div class="header-cta">
+                <a href="tel:4692625395" class="header-phone">
+                    <i data-lucide="phone"></i>
+                    (469) 262-5395
+                </a>
+                <a href="contact.html" class="btn btn-primary">Free Consultation</a>
+            </div>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-grid"></div>
+        
+        <div class="page-hero-content">
+            <div class="page-hero-label">Legal Insights</div>
+            <h1 class="page-hero-title">
+                Our <span class="highlight">Blog</span>
+            </h1>
+            <p class="page-hero-subtitle">
+                Stay informed with the latest legal insights, case updates, and educational resources about personal injury law in Texas.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="blog-section-bg"></div>
+        <div class="container">
+            <div class="blog-layout">
+                <div class="blog-main">
+                    <!-- Featured Article -->
+                    <div class="featured-article reveal">
+                        <article class="featured-card">
+                            <div class="featured-image">
+                                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&q=80" alt="Featured Article">
+                                <div class="featured-image-overlay"></div>
+                                <span class="featured-category">Personal Injury</span>
+                            </div>
+                            <div class="featured-content">
+                                <div class="featured-meta">
+                                    <span><i data-lucide="calendar"></i> January 15, 2026</span>
+                                    <span><i data-lucide="user"></i> Dagmawi Getachew</span>
+                                    <span><i data-lucide="clock"></i> 8 min read</span>
+                                </div>
+                                <h2><a href="#">Understanding Your Rights After a Serious Car Accident in Texas</a></h2>
+                                <p>A car accident can change your life in an instant. Beyond the physical injuries, you may face mounting medical bills, lost wages, and emotional trauma. Understanding your legal rights is the first step toward recovery and fair compensation.</p>
+                                <a href="#" class="featured-link">
+                                    Read Full Article <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- Blog Grid -->
+                    <div class="blog-grid">
+                        <article class="blog-card reveal stagger-1">
+                            <div class="blog-card-image">
+                                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&q=80" alt="Medical Malpractice">
+                                <div class="blog-card-overlay"></div>
+                                <span class="blog-card-category">Medical Malpractice</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <div class="blog-card-meta">
+                                    <span><i data-lucide="calendar"></i> January 10, 2026</span>
+                                    <span><i data-lucide="clock"></i> 6 min read</span>
+                                </div>
+                                <h3><a href="#">How to Know If You Have a Medical Malpractice Case</a></h3>
+                                <p>Medical malpractice occurs when a healthcare provider's negligence causes patient harm. Learn the key elements required to pursue a successful medical malpractice claim in Texas.</p>
+                                <a href="#" class="blog-card-link">
+                                    Read More <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                        
+                        <article class="blog-card reveal stagger-2">
+                            <div class="blog-card-image">
+                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" alt="Wrongful Death">
+                                <div class="blog-card-overlay"></div>
+                                <span class="blog-card-category">Wrongful Death</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <div class="blog-card-meta">
+                                    <span><i data-lucide="calendar"></i> January 5, 2026</span>
+                                    <span><i data-lucide="clock"></i> 7 min read</span>
+                                </div>
+                                <h3><a href="#">Wrongful Death Claims: What Texas Families Need to Know</a></h3>
+                                <p>Losing a loved one due to another's negligence is devastating. This guide explains who can file a wrongful death claim in Texas and what damages may be recovered.</p>
+                                <a href="#" class="blog-card-link">
+                                    Read More <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                        
+                        <article class="blog-card reveal stagger-3">
+                            <div class="blog-card-image">
+                                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Trucking Accidents">
+                                <div class="blog-card-overlay"></div>
+                                <span class="blog-card-category">Trucking Accidents</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <div class="blog-card-meta">
+                                    <span><i data-lucide="calendar"></i> December 30, 2025</span>
+                                    <span><i data-lucide="clock"></i> 5 min read</span>
+                                </div>
+                                <h3><a href="#">Why Trucking Accident Cases Are More Complex Than Car Accidents</a></h3>
+                                <p>Commercial truck accidents involve federal regulations, multiple potentially liable parties, and significant damages. Understanding these complexities is crucial for your case.</p>
+                                <a href="#" class="blog-card-link">
+                                    Read More <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                        
+                        <article class="blog-card reveal stagger-4">
+                            <div class="blog-card-image">
+                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" alt="Premises Liability">
+                                <div class="blog-card-overlay"></div>
+                                <span class="blog-card-category">Premises Liability</span>
+                            </div>
+                            <div class="blog-card-content">
+                                <div class="blog-card-meta">
+                                    <span><i data-lucide="calendar"></i> December 28, 2025</span>
+                                    <span><i data-lucide="clock"></i> 5 min read</span>
+                                </div>
+                                <h3><a href="#">Property Owner Liability: When Can You Sue for Slip and Fall Injuries?</a></h3>
+                                <p>Slip and fall accidents can result in serious injuries. Learn what you need to prove property owner negligence and when you may be entitled to compensation.</p>
+                                <a href="#" class="blog-card-link">
+                                    Read More <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <span class="active">1</span>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#"><i data-lucide="chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <aside class="blog-sidebar">
+                    <div class="sidebar-widget">
+                        <h4>Search</h4>
+                        <form class="search-form">
+                            <input type="text" placeholder="Search articles...">
+                            <button type="submit"><i data-lucide="search"></i></button>
+                        </form>
+                    </div>
+                    
+                    <div class="sidebar-widget">
+                        <h4>Categories</h4>
+                        <ul class="category-list">
+                            <li><a href="#">Personal Injury <span>12</span></a></li>
+                            <li><a href="#">Medical Malpractice <span>8</span></a></li>
+                            <li><a href="#">Wrongful Death <span>6</span></a></li>
+                            <li><a href="#">Premises Liability <span>5</span></a></li>
+                            <li><a href="#">Auto Accidents <span>9</span></a></li>
+                            <li><a href="#">Legal News <span>4</span></a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-widget">
+                        <h4>Recent Posts</h4>
+                        <div class="recent-posts-list">
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=200&q=80" alt="Recent post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <h5><a href="#">What to Do After a Car Accident in Texas</a></h5>
+                                    <div class="recent-post-date">
+                                        <i data-lucide="calendar"></i> Jan 15, 2026
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=200&q=80" alt="Recent post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <h5><a href="#">Understanding Medical Malpractice Claims</a></h5>
+                                    <div class="recent-post-date">
+                                        <i data-lucide="calendar"></i> Jan 10, 2026
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200&q=80" alt="Recent post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <h5><a href="#">Wrongful Death Claims: Seeking Justice</a></h5>
+                                    <div class="recent-post-date">
+                                        <i data-lucide="calendar"></i> Jan 5, 2026
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-widget cta-widget">
+                        <h4>Need Legal Help?</h4>
+                        <p>Contact us today for a free, confidential consultation about your case.</p>
+                        <a href="contact.html" class="btn btn-glow">
+                            <i data-lucide="phone"></i>
+                            Contact Us
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">DG</div>
+                        <div class="logo-text">
+                            DG Law
+                            <span>Law Firm</span>
+                        </div>
+                    </a>
+                    <p>DG Law Firm provides strategic legal representation for personal injury, wrongful death, and medical malpractice cases throughout Texas.</p>
+                    <div class="footer-social">
+                        <a href="#"><i data-lucide="linkedin"></i></a>
+                        <a href="#"><i data-lucide="facebook"></i></a>
+                        <a href="#"><i data-lucide="twitter"></i></a>
+                        <a href="#"><i data-lucide="instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Practice Areas</h4>
+                    <ul class="footer-links">
+                        <li><a href="services.html#personal-injury">Personal Injury</a></li>
+                        <li><a href="services.html#auto-accidents">Auto Accidents</a></li>
+                        <li><a href="services.html#premises-liability">Premises Liability</a></li>
+                        <li><a href="services.html#medical-malpractice">Medical Malpractice</a></li>
+                        <li><a href="services.html#wrongful-death">Wrongful Death</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="blog.html">Legal Blog</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Contact Info</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span>350 N. Ervay St., Ste. 1006<br>Dallas, Texas 75201</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span><a href="tel:4692625395">(469) 262-5395</a></span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="mail"></i>
+                        <span><a href="mailto:contact@dgfirmlaw.com">contact@dgfirmlaw.com</a></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 Dagmawi Getachew, PLLC. All Rights Reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Disclaimer</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        lucide.createIcons();
+        
+        // Three.js Background - flowing lines
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('bg-canvas'),
+            antialias: true,
+            alpha: true
+        });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        // Create wave lines
+        const linesGroup = new THREE.Group();
+        
+        for (let i = 0; i < 20; i++) {
+            const points = [];
+            for (let j = 0; j < 50; j++) {
+                points.push(new THREE.Vector3(
+                    (j - 25) * 0.5,
+                    (i - 10) * 0.8,
+                    0
+                ));
+            }
+            
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({
+                color: i % 2 === 0 ? 0xC46A2B : 0xB08D57,
+                transparent: true,
+                opacity: 0.1
+            });
+            
+            const line = new THREE.Line(geometry, material);
+            line.userData = { offset: i * 0.5 };
+            linesGroup.add(line);
+        }
+        
+        scene.add(linesGroup);
+        camera.position.z = 10;
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+        });
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            linesGroup.children.forEach((line, i) => {
+                const positions = line.geometry.attributes.position.array;
+                for (let j = 0; j < positions.length; j += 3) {
+                    positions[j + 2] = Math.sin(time + positions[j] * 0.3 + line.userData.offset) * 0.5;
+                }
+                line.geometry.attributes.position.needsUpdate = true;
+            });
+            
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+        
+        let cursorX = 0;
+        let cursorY = 0;
+        let ringX = 0;
+        let ringY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+        });
+        
+        function animateCursor() {
+            ringX += (cursorX - ringX) * 0.1;
+            ringY += (cursorY - ringY) * 0.1;
+            
+            cursorDot.style.left = cursorX + 'px';
+            cursorDot.style.top = cursorY + 'px';
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        
+        animateCursor();
+        
+        document.querySelectorAll('a, button, .btn, input').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+        });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.to('.page-hero-label', { opacity: 1, y: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
+        gsap.to('.page-hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
+        gsap.to('.page-hero-subtitle', { opacity: 1, y: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
+        
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-50px' });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+        
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
